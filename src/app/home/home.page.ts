@@ -1,46 +1,51 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {Produit} from '../models/Produit';
 import {ProduitsService} from '../produits.service';
 import {BarcodeScanner} from '@ionic-native/barcode-scanner/ngx';
 import {OpenFoodFact} from '../models/OpenFoodFact';
 import {AlertController} from '@ionic/angular';
+import {Storage} from '@ionic/storage';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+    selector: 'app-home',
+    templateUrl: 'home.page.html',
+    styleUrls: ['home.page.scss'],
 })
 
 export class HomePage {
-  myProducts: Array<Produit>;
-  constructor(private produitsService: ProduitsService, private barcodeScanner: BarcodeScanner, private alertController: AlertController) {
-    this.myProducts = produitsService.getMyProducts();
-  }
+    myProducts: Array<Produit> = [];
 
-  scanCode() {
-    this.barcodeScanner
-        .scan()
-        .then(barcodeData => {
-          if (!barcodeData.cancelled) {
-            alert(barcodeData.format + ' | ' + barcodeData.text);
-            if (barcodeData.format === 'EAN_13' && barcodeData.text !== '') {
-              this.getScannedProduct(barcodeData.text);
-            } else if (barcodeData.text === '') {
-              alert('Code-bar ilisible.');
-            } else {
-              alert('Seul le format de code-bar EAN_13 est supporté.');
-            }
-          }
-        })
-        .catch(err => {
-          console.log('Error', err);
-          this.getScannedProduct('3257971309114');
+    constructor(private produitsService: ProduitsService, private barcodeScanner: BarcodeScanner, private alertController: AlertController,
+                private storage: Storage) {
+        storage.get('produits').then((val) => {
+            this.myProducts = val ? val : [];
         });
-  }
+    }
+
+    scanCode() {
+        this.barcodeScanner
+            .scan()
+            .then(barcodeData => {
+                if (!barcodeData.cancelled) {
+                    alert(barcodeData.format + ' | ' + barcodeData.text);
+                    if (barcodeData.format === 'EAN_13' && barcodeData.text !== '') {
+                        this.getScannedProduct(barcodeData.text);
+                    } else if (barcodeData.text === '') {
+                        alert('Code-bar ilisible.');
+                    } else {
+                        alert('Seul le format de code-bar EAN_13 est supporté.');
+                    }
+                }
+            })
+            .catch(err => {
+                console.log('Error', err);
+                this.getScannedProduct('3257971309114');
+            });
+    }
 
     getScannedProduct(code: string) {
-        this.produitsService.getProduitBDD(code).subscribe((data: OpenFoodFact) => {
+        this.produitsService.getProduitOpenFoodFacts(code).subscribe((data: OpenFoodFact) => {
             if (data.status === 1) {
                 const newProduct = {
                     code: data.code,
@@ -51,9 +56,9 @@ export class HomePage {
                 } as Produit;
                 this.presentAlertPrompt(newProduct);
             }
-
         });
     }
+
     async presentAlertPrompt(product: Produit) {
         const alert = await this.alertController.create({
             subHeader: 'Ajouter une date limite et la quantité ?',
@@ -89,6 +94,7 @@ export class HomePage {
                             product.qty = data.qty;
                         }
                         this.myProducts.push(product);
+                        this.storage.set('produits', this.myProducts);
                     }
                 }
             ]
