@@ -7,14 +7,20 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ion-list>
+    <ion-item-sliding *ngFor="let produit of myProducts">
+      <ion-item>{{ produit.produitName }}
+        <ion-note slot="end">{{ produit.qty }}</ion-note>
+        <ion-item-options side="end">
+          <ion-item-option color="primary" (click)="plus(item)">+</ion-item-option>
+          <ion-item-option color="secondary" (click)="moins(item)">-</ion-item-option>
+        </ion-item-options>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+  <ion-fab class="ion-padding" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="scanCode()">
+      <ion-icon name="qr-code-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

@@ -1,5 +1,7 @@
 {
   "name": "frezze-ionic",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
