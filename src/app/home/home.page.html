@@ -1,3 +1,5 @@
+<!-- https://drissas.com/ionic-whatsapp/
+  https://stackoverflow.com/questions/35623280/ionic-ion-item-text-is-not-vertically-centered-when-ion-icon-is-bigger?answertab=votes#tab-top -->
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
@@ -13,14 +15,25 @@
 
 <ion-content [fullscreen]="true">
   <ion-list>
-    <ion-item-sliding *ngFor="let produit of myProducts">
-      <ion-item>{{ produit.produitName }}
-        <ion-note slot="end">{{ produit.qty }}</ion-note>
-        <ion-item-options side="end">
-          <ion-item-option color="primary" (click)="plus(item)">+</ion-item-option>
-          <ion-item-option color="secondary" (click)="moins(item)">-</ion-item-option>
-        </ion-item-options>
+    <ion-item-sliding *ngFor="let produit of myProducts; index as i">
+      <ion-item>
+        <ion-label>
+          <div class="flex_box grey">
+            <h3>{{ produit.brands }}</h3>
+            <ion-note slot="end">{{ produit.qty }}</ion-note>
+          </div>
+          <div class="flex_box">
+            <h2>{{ produit.produitName }}</h2>
+          </div>
+          <div *ngIf="produit.limitDate" class="flex_box grey">
+            <p><ion-icon class="icon" name="time-outline"></ion-icon> <span>{{ produit.limitDate }}</span> </p>
+          </div>
+        </ion-label>
       </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="secondary" (click)="removeOne(i)"><ion-icon name="remove"></ion-icon></ion-item-option>
+        <ion-item-option color="primary" (click)="addOne(i)"><ion-icon name="add"></ion-icon></ion-item-option>
+      </ion-item-options>
     </ion-item-sliding>
   </ion-list>
   <ion-fab class="ion-padding" vertical="bottom" horizontal="end" slot="fixed">

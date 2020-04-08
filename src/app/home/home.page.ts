@@ -49,8 +49,9 @@ export class HomePage {
             if (data.status === 1) {
                 const newProduct = {
                     code: data.code,
+                    brands : data.product.brands,
                     produitName: data.product.product_name_fr,
-                    category: data.product.categories.replace(/ .*/, ''),
+                    category: data.product.categories.replace(/, .*/, ''),
                     qty: 1,
                     limitDate: undefined
                 } as Produit;
@@ -94,12 +95,28 @@ export class HomePage {
                             product.qty = data.qty;
                         }
                         this.myProducts.push(product);
-                        this.storage.set('produits', this.myProducts);
+                        this.updateStorage();
                     }
                 }
             ]
         });
 
         await alert.present();
+    }
+
+    removeOne(i: number) {
+        this.myProducts[i].qty--;
+        if (this.myProducts[i].qty === 0) {
+            this.myProducts.splice(i, 1);
+        }
+        this.updateStorage();
+    }
+
+    addOne(i: number) {
+        this.myProducts[i].qty++;
+        this.updateStorage();
+    }
+    private updateStorage() {
+        this.storage.set('produits', this.myProducts);
     }
 }

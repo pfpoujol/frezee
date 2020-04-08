@@ -1,31 +1,23 @@
-#container {
-  text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+// https://drissas.com/ionic-whatsapp/
+// https://drissas.com/ionic-design/
+// https://stackoverflow.com/questions/35623280/ionic-ion-item-text-is-not-vertically-centered-when-ion-icon-is-bigger?answertab=votes#tab-top
+.flex_box {
+  display: flex;
+  justify-content: space-between;
 }
-
-#container strong {
+ion-note {
+  font-size: 14px;
+}
+.icon {
+  display: inline-block;
   font-size: 20px;
-  line-height: 26px;
+  vertical-align: middle;
+  padding-right: 4px;
 }
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-
-  color: #8c8c8c;
-
-  margin: 0;
+span {
+  display: inline-block;
+  vertical-align: middle;
 }
-
-#container a {
-  text-decoration: none;
-}
-
-ion-content ion-toolbar {
-  --background: translucent;
+.grey {
+  color: #5a5a5a;
 }
