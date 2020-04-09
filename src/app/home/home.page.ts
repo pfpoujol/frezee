@@ -67,7 +67,7 @@ export class HomePage {
                 {
                     name: 'limitDate',
                     type: 'date',
-                    min: moment().format('YYYY-DD-MM'),
+                    min: moment().format('YYYY-MM-DD'),
                     placeholder: 'Date limite'
                 },
                 {
