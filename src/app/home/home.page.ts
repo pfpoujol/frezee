@@ -28,7 +28,6 @@ export class HomePage {
             .scan()
             .then(barcodeData => {
                 if (!barcodeData.cancelled) {
-                    alert(barcodeData.format + ' | ' + barcodeData.text);
                     if (barcodeData.format === 'EAN_13' && barcodeData.text !== '') {
                         this.getScannedProduct(barcodeData.text);
                     } else if (barcodeData.text === '') {
