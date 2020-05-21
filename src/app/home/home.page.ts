@@ -45,13 +45,12 @@ export class HomePage {
             .catch(err => {
                 console.log('Error', err);
                 // this.getScannedProduct('3257971309114');
-                this.getScannedProduct('3760239183086');
+                // this.getScannedProduct('3760239183086');
             });
     }
 
     getScannedProduct(code: string) {
         this.produitsService.getProduitOpenFoodFacts(code).subscribe((data: OpenFoodFact) => {
-            console.log(data);
             if (data.status === 1) {
                 const newProduct = {
                     code: data.code,
@@ -64,11 +63,25 @@ export class HomePage {
                 this.presentAlertPrompt(newProduct);
             } else if (data.status === 0) {
                 const newProduct = this.localProducts.find(produit => produit.code === code);
-                newProduct ? this.presentAlertPrompt({ ...newProduct }) : this.openModal(data.code);
+                if (newProduct) {
+                    this.presentAlertPrompt({ ...newProduct });
+                } else {
+                    this.presentAlert(data.code).then(() => this.openModal(data.code));
+                }
             }
         });
     }
 
+    async presentAlert(code: string) {
+        const alert = await this.alertController.create({
+            header: 'Produit introuvable',
+            subHeader: 'Aucun produit correspondant au code bar "' + code + '" trouvé.',
+            message: 'Veuillez l\'ajouter via le formulaire.',
+            buttons: ['OK']
+        });
+
+        await alert.present();
+    }
     async presentAlertPrompt(product: Produit) {
         const alert = await this.alertController.create({
             subHeader: 'Ajouter une date limite et la quantité ?',
