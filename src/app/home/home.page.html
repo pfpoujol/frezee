@@ -14,7 +14,7 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-list>
+  <ion-list *ngIf="myProducts.length>0; else noProduct">
     <ion-item-sliding *ngFor="let produit of myProducts; index as i">
       <ion-item>
         <ion-label>
@@ -45,6 +45,8 @@
     </ion-item-sliding>
     <div style="height: 72px"></div>
   </ion-list>
+  <ng-template #noProduct><div class="ion-margin ion-text-center"><p>Vous n'avez aucun produit dans votre <span style="font-weight: bold">Frezee</span>.</p><p>Vous pouvez ajouter des produits en scannant le code-bar ou via le formulaire.</p></div></ng-template>
+
 
   <ion-fab class="ion-margin" horizontal="end" vertical="bottom" slot="fixed">
     <ion-fab-button>
