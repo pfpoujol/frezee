@@ -1,8 +1,8 @@
 export interface OpenFoodFact {
     product: Product;
     code: string;
-    status: number;
-    status_verbose: string;
+    status: 0 | 1;
+    status_verbose: 'product found' | 'product not found';
 }
 interface Product {
     code: string;

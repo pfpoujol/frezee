@@ -40,11 +40,13 @@ export class HomePage {
             .catch(err => {
                 console.log('Error', err);
                 this.getScannedProduct('3257971309114');
+                // this.getScannedProduct('3760239183086');
             });
     }
 
     getScannedProduct(code: string) {
         this.produitsService.getProduitOpenFoodFacts(code).subscribe((data: OpenFoodFact) => {
+            console.log(data);
             if (data.status === 1) {
                 const newProduct = {
                     code: data.code,
@@ -55,6 +57,8 @@ export class HomePage {
                     limitDate: undefined
                 } as Produit;
                 this.presentAlertPrompt(newProduct);
+            } else if (data.status === 0) {
+                console.log('produit introuvable');
             }
         });
     }
@@ -117,5 +121,9 @@ export class HomePage {
     }
     private updateStorage() {
         this.storage.set('produits', this.myProducts);
+    }
+
+    hasExpired(limitDate: Date) {
+        return moment(limitDate).isSameOrBefore();
     }
 }
