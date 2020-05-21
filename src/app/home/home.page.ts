@@ -3,9 +3,10 @@ import {Produit} from '../models/Produit';
 import {ProduitsService} from '../produits.service';
 import {BarcodeScanner} from '@ionic-native/barcode-scanner/ngx';
 import {OpenFoodFact} from '../models/OpenFoodFact';
-import {AlertController} from '@ionic/angular';
+import {AlertController, ModalController} from '@ionic/angular';
 import {Storage} from '@ionic/storage';
 import * as moment from 'moment';
+import {ModalPage} from '../modal/modal.page';
 
 @Component({
     selector: 'app-home',
@@ -14,12 +15,16 @@ import * as moment from 'moment';
 })
 
 export class HomePage {
+    localProducts: Array<Produit> = []
     myProducts: Array<Produit> = [];
 
     constructor(private produitsService: ProduitsService, private barcodeScanner: BarcodeScanner, private alertController: AlertController,
-                private storage: Storage) {
-        storage.get('produits').then((val) => {
+                private storage: Storage, private modalController: ModalController) {
+        storage.get('myProducts').then((val) => {
             this.myProducts = val ? val : [];
+        });
+        storage.get('localProducts').then((val) => {
+            this.localProducts = val ? val : [];
         });
     }
 
@@ -39,8 +44,8 @@ export class HomePage {
             })
             .catch(err => {
                 console.log('Error', err);
-                this.getScannedProduct('3257971309114');
-                // this.getScannedProduct('3760239183086');
+                // this.getScannedProduct('3257971309114');
+                this.getScannedProduct('3760239183086');
             });
     }
 
@@ -58,7 +63,8 @@ export class HomePage {
                 } as Produit;
                 this.presentAlertPrompt(newProduct);
             } else if (data.status === 0) {
-                console.log('produit introuvable');
+                const newProduct = this.localProducts.find(produit => produit.code === code);
+                newProduct ? this.presentAlertPrompt({ ...newProduct }) : this.openModal(data.code);
             }
         });
     }
@@ -82,7 +88,7 @@ export class HomePage {
             ],
             buttons: [
                 {
-                    text: 'Pas besoin',
+                    text: 'Annuler',
                     role: 'cancel',
                     cssClass: 'secondary',
                     handler: () => {
@@ -98,7 +104,7 @@ export class HomePage {
                             product.qty = data.qty;
                         }
                         this.myProducts.push(product);
-                        this.updateStorage();
+                        this.updateStorage('myProducts');
                     }
                 }
             ]
@@ -107,20 +113,41 @@ export class HomePage {
         await alert.present();
     }
 
+    async openModal(code?: string) {
+        const modal = await this.modalController.create({
+                component: ModalPage,
+                componentProps: {
+                    code
+                }
+            });
+
+        modal.onDidDismiss().then(detail => {
+            if (detail.data !== undefined) {
+                this.myProducts.push(detail.data);
+                this.updateStorage('myProducts');
+                if (detail.data.code !== null) {
+                    this.localProducts.push({ ...detail.data, category: undefined, qty: 1, limitDate: undefined});
+                    this.updateStorage('localProducts');
+                }
+            }
+        });
+
+        return await modal.present();
+    }
     removeOne(i: number) {
         this.myProducts[i].qty--;
         if (this.myProducts[i].qty === 0) {
             this.myProducts.splice(i, 1);
         }
-        this.updateStorage();
+        this.updateStorage('myProducts');
     }
 
     addOne(i: number) {
         this.myProducts[i].qty++;
-        this.updateStorage();
+        this.updateStorage('mes');
     }
-    private updateStorage() {
-        this.storage.set('produits', this.myProducts);
+    private updateStorage(storageKey: string) {
+        this.storage.set(storageKey, this[storageKey]);
     }
 
     hasExpired(limitDate: Date) {

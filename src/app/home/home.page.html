@@ -19,7 +19,10 @@
       <ion-item>
         <ion-label>
           <div class="flex_box grey">
-            <h3>{{ produit.brands }}</h3>
+            <h3 *ngIf="produit.brands; else elseBrands">{{ produit.brands }}</h3>
+            <ng-template #elseBrands>
+            <h3>Sans marque</h3>
+            </ng-template>
             <ion-note slot="end">{{ produit.qty }}</ion-note>
           </div>
           <div class="flex_box">
@@ -41,9 +44,18 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
-  <ion-fab class="ion-padding" vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="scanCode()">
-      <ion-icon name="qr-code-outline"></ion-icon>
+
+  <ion-fab class="ion-margin" horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
     </ion-fab-button>
+    <ion-fab-list side="start">
+      <ion-fab-button color="light" (click)="scanCode()">
+        <ion-icon name="qr-code-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button color="light" (click)="openModal()">
+        <ion-icon name="pencil-sharp"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
   </ion-fab>
 </ion-content>

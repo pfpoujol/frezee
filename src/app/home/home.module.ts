@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
 import {BarcodeScanner} from '@ionic-native/barcode-scanner/ngx';
+import {ModalPageModule} from '../modal/modal.module';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import {BarcodeScanner} from '@ionic-native/barcode-scanner/ngx';
         path: '',
         component: HomePage
       }
-    ])
+    ]),
+    ModalPageModule
   ],
   declarations: [HomePage],
   providers: [BarcodeScanner]

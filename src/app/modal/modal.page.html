@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+      <ion-buttons slot="end">
+          <ion-button (click)="closeModal()">Annuler</ion-button>
+      </ion-buttons>
+    <ion-title>
+      Ajouter une produit
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true">
+    <form [formGroup]="productForm">
+        <ion-item>
+            <ion-label position="floating">Marque</ion-label>
+            <ion-input autocapitalize="words" formControlName="brands"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Nom du produit <ion-text color="danger">*</ion-text></ion-label>
+            <ion-input autocapitalize="on" required="true" formControlName="produitName"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Date limite</ion-label>
+<!--            <ion-datetime displayFormat="DD/MM/YY" formControlName="limitDate"></ion-datetime>-->
+            <ion-input type="date" [min]="minDate" clearInput="true" formControlName="limitDate"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label position="floating">Quantité</ion-label>
+            <ion-input type="number" clearOnEdit="true" formControlName="qty"></ion-input>
+        </ion-item>
+    </form>
+</ion-content>
+<ion-footer translucent="true" mode="ios">
+<!--  <ion-button expand="full" (click)="validModal()">Valider</ion-button>-->
+  <ion-button expand="full" [disabled]="productForm.invalid" (click)="validModal()">Valider</ion-button>
+</ion-footer>
