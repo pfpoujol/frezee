@@ -1,0 +1,26 @@
+<ion-content fullscreen scroll-y="false">
+<ion-slides pager="true" [options]="slideOpts">
+  <ion-slide>
+    <img lazyLoad="/assets/slide1.png" alt="scan"/>
+    <h1>Scan</h1>
+    <p>
+      Utilisez l'appareil photo de votre téléphone pour scanner le code-bar du produit et l'ajouter automatique à votre Frezee !
+    </p>
+  </ion-slide>
+  <ion-slide>
+    <img lazyLoad="/assets/slide2.png"  alt="swipe"/>
+    <h1>Swipe</h1>
+    <p>
+      Swipez de droite à gauche pour augmenter/diminuer la quantité pour un produit !
+    </p>
+  </ion-slide>
+  <ion-slide>
+    <img lazyLoad="/assets/slide3.png" alt="checkmark"/>
+    <h1>C'est parti !</h1>
+    <p>
+      Ne laissez plus dépérie vos aliments au fin fond de votre frigo. Merci Frezee !
+    </p>
+    <ion-button fill="clear" (click)="finish()">Continuer <ion-icon slot="end" name="arrow-forward"></ion-icon></ion-button>
+  </ion-slide>
+</ion-slides>
+</ion-content>

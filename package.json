@@ -30,6 +30,7 @@
     "cordova-sqlite-storage": "^5.0.0",
     "core-js": "^2.5.4",
     "moment": "^2.24.0",
+    "ng-lazyload-image": "^7.1.0",
     "phonegap-plugin-barcodescanner": "^8.1.0",
     "rxjs": "~6.5.1",
     "sharp": "^0.25.3",
