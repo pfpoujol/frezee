@@ -1,6 +1,5 @@
 ion-slide {
   height: 100vh;
-  width: 100vw;
   flex-direction: column;
   text-align: justify;
 }
@@ -10,6 +9,7 @@ img {
   overflow: hidden;
 }
 p {
+  height: 120px;
   padding: 1em;
 }
 ion-button {

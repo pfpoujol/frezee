@@ -15,7 +15,7 @@ import {ModalPage} from '../modal/modal.page';
 })
 
 export class HomePage {
-    localProducts: Array<Produit> = []
+    localProducts: Array<Produit> = [];
     myProducts: Array<Produit> = [];
 
     constructor(private produitsService: ProduitsService, private barcodeScanner: BarcodeScanner, private alertController: AlertController,
